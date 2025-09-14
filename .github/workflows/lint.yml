@@ -1,0 +1,38 @@
+# Nome do Workflow
+name: Lint Code
+
+# Gatilhos (Triggers): Quando este workflow deve rodar?
+on:
+  # Roda em toda nova Pull Request
+  pull_request:
+    branches: [ "main" ]
+  # Roda também em pushes diretos para o branch main
+  push:
+    branches: [ "main" ]
+
+# Tarefas a serem executadas
+jobs:
+  # Nome do job de linter
+  lint:
+    # Nome que aparecerá na interface do GitHub
+    name: Run code linters
+    # Máquina virtual que executará o job
+    runs-on: ubuntu-latest
+
+    # Passos que compõem o job
+    steps:
+      # 1. Passo para baixar o código para a máquina virtual
+      - name: Check out code
+        uses: actions/checkout@v4
+
+      # 2. Passo para verificar a qualidade (lint) dos arquivos HTML
+      - name: Lint HTML files
+        uses: anmol098/html-linter-action@v1.0
+        with:
+          path: . # Verifica todos os arquivos no repositório
+
+      # 3. Passo para verificar a qualidade (lint) dos arquivos CSS
+      - name: Lint CSS files
+        uses: anmol098/css-linter-action@v1.0
+        with:
+           path: . # Verifica todos os arquivos no repositório
