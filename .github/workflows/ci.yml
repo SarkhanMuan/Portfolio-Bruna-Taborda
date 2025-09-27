@@ -7,21 +7,35 @@ on:
     branches: [ "main" ]
 
 jobs:
-  # Job de Linter (exatamente como antes)
+  # Job de Linter (Atualizado para actions válidas)
   lint:
     name: Run code linters
     runs-on: ubuntu-latest
     steps:
       - name: Check out code
         uses: actions/checkout@v4
-      - name: Lint HTML files
-        uses: anmol098/html-linter-action@v1.0
+
+      # Novo Linter HTML (usando ação mais genérica ou popular)
+      - name: Lint HTML files (using html-validate)
+        uses: docker://ghcr.io/html-validate/html-validate:latest
         with:
-          path: .
-      - name: Lint CSS files
-        uses: anmol098/css-linter-action@v1.0
+          args: . # Assume que você quer validar todos os arquivos no diretório
+
+      # Novo Linter CSS (usando o linter oficial de forma direta)
+      - name: Lint CSS files (using stylelint)
+        uses: actions/setup-node@v4 # Configura Node.js para rodar stylelint
         with:
-           path: .
+          node-version: '20' # Use uma versão LTS
+
+      - name: Install Stylelint and dependencies
+        run: |
+          npm install stylelint stylelint-config-standard
+          # Se você tem configurações específicas, instale-as aqui
+
+      - name: Run Stylelint
+        run: npx stylelint "**/*.css" # Ajuste o glob pattern conforme necessário
+
+  ---
 
   # Rodar os Testes Unitários
   test:
