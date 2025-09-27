@@ -15,11 +15,11 @@ jobs:
       - name: Check out code
         uses: actions/checkout@v4
       - name: Lint HTML files
-        uses: anmol098/html-linter-action@v1.0
+        uses: swellaby/html-validate-action@v2
         with:
           path: .
       - name: Lint CSS files
-        uses: anmol098/css-linter-action@v1.0
+        uses: stylelint/stylelint-action@v3
         with:
            path: .
 
