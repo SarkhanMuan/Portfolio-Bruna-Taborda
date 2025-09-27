@@ -1,0 +1,53 @@
+name: Continuous Integration
+
+on:
+  pull_request:
+    branches: [ "main" ]
+  push:
+    branches: [ "main" ]
+
+jobs:
+  # Job de Linter (exatamente como antes)
+  lint:
+    name: Run code linters
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+      - name: Lint HTML files
+        uses: anmol098/html-linter-action@v1.0
+        with:
+          path: .
+      - name: Lint CSS files
+        uses: anmol098/css-linter-action@v1.0
+        with:
+           path: .
+
+  # Rodar os Testes Unitários
+  test:
+    # Nome do Job
+    name: Run Unit Tests
+    # Precisa do job de lint para passar primeiro
+    needs: lint
+    # Máquina virtual
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Baixar o código do repositório
+      - name: Check out code
+        uses: actions/checkout@v4
+
+      # 2. Configurar o ambiente Python
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10' # Usando uma versão moderna do Python
+
+      # 3. Instalar as dependências do nosso arquivo requirements.txt
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+      # 4. Rodar o Pytest!
+      - name: Run tests with pytest
+        run: pytest
