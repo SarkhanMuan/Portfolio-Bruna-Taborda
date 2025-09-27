@@ -23,7 +23,7 @@ jobs:
         with:
            path: .
 
-  # NOVO JOB: Rodar os Testes Unitários
+  # Rodar os Testes Unitários
   test:
     # Nome do Job
     name: Run Unit Tests
